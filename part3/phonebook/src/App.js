@@ -70,7 +70,8 @@ const App = () => {
           console.log(error)
             // const errors = ;
             // const message = Object.values(errors).map(error => error.message).join(', ');
-            setMessage({text: error.message, type: 'validation'});
+            setMessage({text:`Name must be at least 3 characters and number must be at least 8 characters`, type:'validation'})
+            console.log('134234567890')
             setTimeout(() => {setMessage(null)}, 3000)
           } else {
             console.log('hahahhah');
