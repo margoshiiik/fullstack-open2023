@@ -1,9 +1,8 @@
-POST http://localhost:3003/api/blogs
+POST http://localhost:3003/api/users
 Content-Type: application/json
 
 {
-    "title": "hello23", 
-    "author": "erdfgkvlpsk;ffdggh", 
-    "url": "kjfsvddfgkvuf",
-    "likes": 125 
+    "username": "fdleee",
+    "name": "Superuser",
+    "password": "salainen"
 }
