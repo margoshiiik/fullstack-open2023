@@ -1,8 +1,12 @@
 require('dotenv').config()
 const config = require('./utils/config')
+const logger = require('./utils/logger')
 
 const express = require('express')
 const app = express()
+
+const usersRouter = require('./controllers/users')
+const loginRouter = require('./controllers/login')
 
 const bodyParser = require('body-parser')
 app.use(bodyParser.json())
@@ -12,6 +16,13 @@ app.use(cors())
 
 const blogRouter = require('./controllers/blogs')
 app.use('/api/blogs', blogRouter)
+app.use('/api/users', usersRouter)
+app.use('/api/login', loginRouter)
+
+if (process.env.NODE_ENV === 'test') {
+  const testingRouter = require('./controllers/testing')
+  app.use('/api/testing', testingRouter)
+}
 
 const mongoose = require('mongoose')
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true })
@@ -19,18 +30,12 @@ mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true })
 
 console.log('connecting to', process.env.MONGODB_URI)
 
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true })
+mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology: true })
   .then(() => {
-    console.log('connected to MongoDB')
+    logger.info('connected to MongoDB')
   })
   .catch((error) => {
-    console.log('error connection to MongoDB:', error.message)
+    logger.error('error connection to MongoDB:', error.message)
   })
 
-
-const PORT = 3003 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
-})
-
-module.export = app
+module.exports = app
